@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B519F867-FCBC-45F6-9404-6C36AFD10ABF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BIADBIMnavisworks</RootNamespace>
+    <AssemblyName>BIADBIMnavisworks</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autodesk.Navisworks.Api, Version=13.0.1237.8, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Autodesk\Navisworks Manage 2016\Autodesk.Navisworks.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.ComApi, Version=13.0.1237.8, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Autodesk\Navisworks Manage 2016\Autodesk.Navisworks.ComApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Controls, Version=13.0.1237.8, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Autodesk\Navisworks Manage 2016\Autodesk.Navisworks.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Interop.ComApi, Version=13.0.1237.8, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>D:\Program Files\Autodesk\Navisworks Manage 2016\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
+    </Reference>
+    <Reference Include="AxInterop.AcroPDFLib">
+      <HintPath>..\..\WindowsFormsControlLibraryPDF\WindowsFormsControlLibraryPDF\bin\Debug\AxInterop.AcroPDFLib.dll</HintPath>
+    </Reference>
+    <Reference Include="AxInterop.UnityWebPlayerAXLib">
+      <HintPath>..\..\WindowsFormsControlLibraryU3D\WindowsFormsControlLibraryU3D\bin\Debug\AxInterop.UnityWebPlayerAXLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Fluent">
+      <HintPath>..\..\..\..\WPF\fluent-63bf147651b3\fluent_63bf147651b3\Fluent\FluentTest\bin\NET 4.5\Debug\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.AcroPDFLib">
+      <HintPath>..\..\WindowsFormsControlLibraryPDF\WindowsFormsControlLibraryPDF\bin\Debug\Interop.AcroPDFLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.UnityWebPlayerAXLib">
+      <HintPath>..\..\WindowsFormsControlLibraryU3D\WindowsFormsControlLibraryU3D\bin\Debug\Interop.UnityWebPlayerAXLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2015\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\..\..\Glue\workflow-dotnet-winform-view.and.data.api-master1\ViewerHelperApp\ViewerHelperApp\bin\Debug\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsControlLibraryPDF">
+      <HintPath>..\..\WindowsFormsControlLibraryPDF\WindowsFormsControlLibraryPDF\bin\Debug\WindowsFormsControlLibraryPDF.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsFormsControlLibraryU3D">
+      <HintPath>..\..\WindowsFormsControlLibraryU3D\WindowsFormsControlLibraryU3D\bin\Debug\WindowsFormsControlLibraryU3D.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFVisifire.Charts">
+      <HintPath>..\..\..\..\WPF\WPFVisifire.Charts.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock">
+      <HintPath>..\..\..\..\WPF\TLAgent.Ribbon.App.DemoDock4\TLAgent.Ribbon.App.Demo - Dock4\TLAgent.Ribbon.App.Demo\bin\Debug\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Expression">
+      <HintPath>..\..\..\..\WPF\TLAgent.Ribbon.App.DemoDock4\TLAgent.Ribbon.App.Demo - Dock4\TLAgent.Ribbon.App.Demo\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Expression.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
+      <HintPath>..\..\..\..\WPF\TLAgent.Ribbon.App.DemoDock4\TLAgent.Ribbon.App.Demo - Dock4\TLAgent.Ribbon.App.Demo\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ClassAutodeskViewandDataService.cs" />
+    <Compile Include="ClassEnergyAnalysis.cs" />
+    <Compile Include="ClassWebResponseSoap.cs" />
+    <Compile Include="Images\Command\DelegateCommand.cs" />
+    <Compile Include="HttpWebResponseUtility.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Window2.xaml.cs">
+      <DependentUpon>Window2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowDatabase.xaml.cs">
+      <DependentUpon>WindowDatabase.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowOption.xaml.cs">
+      <DependentUpon>WindowOption.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowPDF.xaml.cs">
+      <DependentUpon>WindowPDF.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowDatabase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowOption.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowPDF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="bin\Debug\BIADBIMnavisworks.exe.config" />
+    <None Include="bin\x64\Debug\BIADBIMnavisworks.exe.config" />
+    <None Include="bin\x64\Debug\BIADBIMnavisworks.vshost.exe.config" />
+    <None Include="bin\x64\Debug\BIADBIMnavisworks.vshost.exe.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\arrow_refresh.png" />
+    <Resource Include="Images\background.jpg" />
+    <Resource Include="Images\BIADBIM.png" />
+    <Resource Include="Images\BIM.ico" />
+    <Resource Include="Images\Blue.png" />
+    <Resource Include="Images\BlueLarge.png" />
+    <Resource Include="Images\Brown.png" />
+    <Resource Include="Images\BrownLarge.png" />
+    <Resource Include="Images\close.png" />
+    <Resource Include="Images\cog.png" />
+    <Resource Include="Images\DefaultTrayIcon.ico" />
+    <Resource Include="Images\document.png" />
+    <Resource Include="Images\Gray.png" />
+    <Resource Include="Images\GrayLarge.png" />
+    <Resource Include="Images\Green.png" />
+    <Resource Include="Images\GreenLarge.png" />
+    <Resource Include="Images\Help.png" />
+    <Resource Include="Images\Orange.png" />
+    <Resource Include="Images\OrangeLarge.png" />
+    <Resource Include="Images\Pink.png" />
+    <Resource Include="Images\PinkLarge.png" />
+    <Resource Include="Images\property-blue.png" />
+    <Resource Include="Images\Red.png" />
+    <Resource Include="Images\RedLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\building.png" />
+    <Resource Include="Images\facility.png" />
+    <Resource Include="Images\level.png" />
+    <Resource Include="Images\project.png" />
+    <Resource Include="Images\room.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RefreshLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\select.png" />
+    <Resource Include="Images\selectbox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\measure.png" />
+    <Resource Include="Images\pan.png" />
+    <Resource Include="Images\zoom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cloudlmv.png" />
+    <Resource Include="Images\database.png" />
+    <Resource Include="Images\database1.png" />
+    <Resource Include="Images\database2.png" />
+    <Resource Include="Images\energy.png" />
+    <Resource Include="Images\facilitymonitor.png" />
+    <Resource Include="Images\facilitystate.png" />
+    <Resource Include="Images\freeorb.png" />
+    <Resource Include="Images\hidden.png" />
+    <Resource Include="Images\movie.png" />
+    <Resource Include="Images\property.png" />
+    <Resource Include="Images\roamall.png" />
+    <Resource Include="Images\search.png" />
+    <Resource Include="Images\search16.png" />
+    <Resource Include="Images\selecttree.png" />
+    <Resource Include="Images\showall.png" />
+    <Resource Include="Images\unhidden.png" />
+    <Resource Include="Images\viewfacility.png" />
+    <Resource Include="Images\viewroom.png" />
+    <Resource Include="Images\walking.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\monitor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\viewtop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\viewFloor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\viewfit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\BIADBIMnavisworks.exe" />
+    <Content Include="bin\Debug\BIADBIMnavisworks.pdb" />
+    <Content Include="bin\x64\Debug\BIADBIMnavisworks.vshost.exe" />
+    <Resource Include="Images\pm25.png" />
+    <Resource Include="Images\SectioningClear.png" />
+    <Resource Include="Images\SectioningCreate.png" />
+    <Resource Include="Images\SectioningEnable.png" />
+    <Resource Include="Images\view2D3D.png" />
+    <Resource Include="Images\view2Ddrawing.png" />
+    <Resource Include="Images\view3Dmodel.png" />
+    <Resource Include="Images\viewpoint.png" />
+    <Resource Include="Images\viewpointback.png" />
+    <Resource Include="Images\viewpointbottom.png" />
+    <Resource Include="Images\viewpointfront.png" />
+    <Resource Include="Images\viewpointleft.png" />
+    <Resource Include="Images\viewpointright.png" />
+    <Resource Include="Images\viewpointTop.png" />
+    <Resource Include="Images\Heat.png" />
+    <Resource Include="Images\HeatDepAnalysis.png" />
+    <Resource Include="Images\heatMonthAnalysis.png" />
+    <Resource Include="Images\water.png" />
+    <Resource Include="Images\waterDepAnalysis.png" />
+    <Resource Include="Images\waterMonthAnalysis.png" />
+    <Resource Include="Images\EleDepAnalysis.png" />
+    <Resource Include="Images\EleMonthAnalysis.png" />
+    <Resource Include="Images\RoomMonitorCurve.png" />
+    <Resource Include="Images\DropDownButtonSystem.png" />
+    <Resource Include="Images\SystemE_QD.png" />
+    <Resource Include="Images\SystemE_RD.png" />
+    <Resource Include="Images\SystemM_NTF.png" />
+    <Resource Include="Images\SystemM_NTS.png" />
+    <Resource Include="Images\SystemP_GPS.png" />
+    <Resource Include="Images\SystemP_XF.png" />
+    <Resource Include="Images\System_TLLC.png" />
+    <Resource Include="Images\viewRoom1.png" />
+    <Resource Include="Images\viewmep.png" />
+    <Resource Include="Images\light.png" />
+    <Resource Include="Images\lightfull.png" />
+    <Resource Include="Images\lighthead.png" />
+    <Resource Include="Images\lightnone.png" />
+    <Resource Include="Images\lightscene.png" />
+    <Resource Include="Images\viewlookaround.png" />
+    <Resource Include="Images\vieworbit.png" />
+    <Resource Include="Images\renderfull.png" />
+    <Resource Include="Images\rendershape.png" />
+    <Resource Include="Images\vr.png" />
+    <Resource Include="Images\arrow_down.png" />
+    <Resource Include="Images\arrow_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+    <Folder Include="bin\x64\Release\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

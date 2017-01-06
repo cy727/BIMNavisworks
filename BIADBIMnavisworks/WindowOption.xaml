@@ -1,0 +1,35 @@
+﻿<Window x:Name="windowOption" x:Class="BIADBIMnavisworks.WindowOption"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="系统基本配置" Height="300" Width="510" Loaded="windowOption_Loaded" ShowInTaskbar="False">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="78*"/>
+            <ColumnDefinition Width="73*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl HorizontalAlignment="Left" Height="230" VerticalAlignment="Top" Width="500" Grid.ColumnSpan="2">
+            <TabItem Header="常规">
+                <StackPanel>
+                    <Label Content="映射目录:" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="TextBoxDirection" Width="460" />
+                        <Button x:Name="ButtonDirection" Content="... ..." Click="ButtonDirection_Click" />
+                    </StackPanel>
+                    <Label Content="图纸目录:" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="TextBoxDrawingsDirection" Width="460" />
+                        <Button x:Name="ButtonDrawingsDirection" Content="... ..." />
+                    </StackPanel>
+                    <Label Content="动画目录:" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="TextBoxMoviessDirection" Width="460" />
+                        <Button x:Name="ButtonMoviesDirection" Content="... ..." />
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+
+        </TabControl>
+        <Button Content="确定" x:Name="buttonYes" HorizontalAlignment="Left" Margin="58,238,0,0" VerticalAlignment="Top" Width="201" Click="buttonYes_Click"/>
+        <Button Content="取消" x:Name="buttonCancel" HorizontalAlignment="Left" Margin="54,238,0,0" VerticalAlignment="Top" Width="94" IsCancel="True" Grid.Column="1" Click="buttonCancel_Click"/>
+    </Grid>
+</Window>

@@ -1,0 +1,580 @@
+﻿<Fluent:RibbonWindow x:Class="BIADBIMnavisworks.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+        xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:vm="clr-namespace:BIADBIMnavisworks.ViewModel"
+        xmlns:NwApi="clr-namespace:Autodesk.Navisworks.Api;assembly=Autodesk.Navisworks.Api"
+        xmlns:NwControls="clr-namespace:Autodesk.Navisworks.Api.Controls;assembly=Autodesk.Navisworks.Controls"
+        xmlns:unity="clr-namespace:WindowsFormsControlLibraryU3D;assembly=WindowsFormsControlLibraryU3D"
+        xmlns:pdf="clr-namespace:WindowsFormsControlLibraryPDF;assembly=WindowsFormsControlLibraryPDF"             
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" 
+        x:Name="MainWindowNavisWorks" 
+        Title="BIAD BIM 数据集成浏览（Navisworks格式）" Height="800" Width="600" Icon="Images/BIM.ico" WindowState="Maximized" Loaded="MainWindowNavisWorks_Loaded" Unloaded="MainWindowNavisWorks_Unloaded" Closing="MainWindowNavisWorks_Closing" KeyUp="MainWindowNavisWorks_KeyUp">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Fluent:Ribbon x:Name="mainribbon" Grid.Row="0" AutomaticStateManagement="True">
+
+            <Fluent:Ribbon.ContextualGroups>
+                <Fluent:RibbonContextualTabGroup x:Name="tabGroup1"
+                                                 BorderBrush="Magenta"
+                                                 Background="Magenta"
+                                                 Foreground="Purple"
+                                                 Header="数据"
+                                                 Visibility="Visible" />
+
+                <Fluent:RibbonContextualTabGroup x:Name="tabGroup2"
+                                                 BorderBrush="#336699"
+                                                 Background="#0099FF"
+                                                 Foreground="#003366"
+                                                 Header="浏览"
+                                                 Visibility="Visible" />
+
+                <Fluent:RibbonContextualTabGroup x:Name="invisibleTabGroup"
+                                                 BorderBrush="Green"
+                                                 Background="Red"
+                                                 Header="MUST BE HIDDEN"
+                                                 Visibility="Visible" />
+            </Fluent:Ribbon.ContextualGroups>
+
+            <Fluent:Ribbon.ToolBarItems>
+                <Fluent:Button Size="Small"
+                               Icon="Images/Help.png"
+                               >
+                    <Fluent:Button.ToolTip>
+                        <Fluent:ScreenTip Title="BIM模型信息集成"
+                                          Text="BIAD BIM 模型数据集成，支持Navisworks格式"
+                                          Image="Images/BIADBIM.png"
+                                          HelpTopic="http:\\www.biad.com.cn"
+                                          DisableReason="Disable reason reason."
+                                          Width="190"
+                                          IsRibbonAligned="True" />
+                    </Fluent:Button.ToolTip>
+                </Fluent:Button>
+            </Fluent:Ribbon.ToolBarItems>
+
+            <!--Add QuickAccess-->
+            <Fluent:Ribbon.QuickAccessItems>
+                <Fluent:QuickAccessMenuItem IsChecked="true">
+                    <Fluent:Button x:Name="ButtonRefreshAll" Header="刷新1"
+                                   Icon="Images/arrow_refresh.png" Click="ButtonRefreshAll_Click"  />
+                </Fluent:QuickAccessMenuItem>
+                <Fluent:QuickAccessMenuItem IsChecked="true">
+                    <Fluent:Button x:Name="ButtonOption" Header="配置"
+                                   Icon="Images/cog.png" Click="ButtonOption_Click" />
+                </Fluent:QuickAccessMenuItem>
+            </Fluent:Ribbon.QuickAccessItems>
+            <!--Add Tabs-->
+
+            <Fluent:RibbonTabItem Header="常用" ReduceOrder="(P),(P),(P),(P),(P)">
+                <Fluent:RibbonGroupBox Header="浏览模式">
+                    <Fluent:DropDownButton x:Name="DropDownButtonSelect" Header="选择" Icon="Images\Pink.png" LargeIcon="Images\select.png">
+                        <Fluent:Button Header="选择" Icon="Images\Green.png" LargeIcon="Images\select.png" Name="ButtonSelect" Click="ButtonSelect_Click" />
+                        <Fluent:Button Header="选择框" Icon="Images\Green.png" LargeIcon="Images\selectbox.png" Name="ButtonSelectBox" Click="ButtonSelectBox_Click" />
+                    </Fluent:DropDownButton>
+                    <Fluent:Button Header="自由观察" Icon="Images\Gray.png" LargeIcon="Images\freeorb.png" Name="ButtonFree" Click="ButtonFree_Click"/>
+                    <Fluent:Button Header="平移" Icon="Images\Gray.png" LargeIcon="Images\pan.png" Name="ButtonPan" Click="ButtonPan_Click" />
+                    <Fluent:Button Header="缩放" Icon="Images\Gray.png" LargeIcon="Images\zoom.png" Name="ButtonZoom" Click="ButtonZoom_Click" />
+                    <Fluent:Button Header="漫游" Icon="Images\Gray.png" LargeIcon="Images\walking.png" Name="ButtonWalk" Click="ButtonWalk_Click" />
+                    <Fluent:Button Header="转盘" Icon="Images\Gray.png" LargeIcon="Images\vieworbit.png" Name="ButtonOrbit" Click="ButtonOrbit_Click"/>
+                    <Fluent:Button Header="环视" Icon="Images\Gray.png" LargeIcon="Images\viewlookaround.png" Name="ButtonLookAround" Click="ButtonLookAround_Click"/>
+                    <Fluent:Button Header="测量" Icon="Images\Gray.png" LargeIcon="Images\measure.png" Name="ButtonMeasure" Click="ButtonMeasure_Click"/>
+                    <Fluent:Button Header="ttt" Icon="Images\Gray.png" LargeIcon="Images\measure.png" Name="Button1" Visibility="Collapsed" Click="Button1_Click" />
+                    <!--
+                    <Fluent:Button Header="特性选择" Icon="Images\Gray.png" LargeIcon="Images\Info.png" Name="ButtonFeature" Click="ButtonFeature_Click" Visibility="Hidden"/>
+                    -->
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="导航">
+                    <Fluent:CheckBox x:Name="checkboxGravity" VerticalAlignment="Center" Checked="checkboxGravity_Checked" Unchecked="checkboxGravity_Unchecked">重力</Fluent:CheckBox>
+                    <Fluent:CheckBox x:Name="checkboxCollisionDetection" VerticalAlignment="Center" Unchecked="checkboxCollisionDetection_Unchecked" Checked="checkboxCollisionDetection_Checked">碰撞</Fluent:CheckBox>
+                    <Fluent:CheckBox x:Name="checkboxThirdPerson" VerticalAlignment="Center" Checked="checkboxThirdPerson_Checked" Unchecked="checkboxThirdPerson_Unchecked">第三人</Fluent:CheckBox>
+                    <!--
+                    <Fluent:CheckBox x:Name="checkboxPerson" VerticalAlignment="Center">蹲伏</Fluent:CheckBox>
+                    -->
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="选择树">
+                    <Fluent:Button Header="刷新" Icon="Images\Gray.png" LargeIcon="Images\RefreshLarge.png" x:Name="ButtonSelectTreeRefresh" Click="ButtonSelectTreeRefresh_Click" Foreground="#FF2B2B2B" ForceCursor="True" />
+                    <Fluent:CheckBox x:Name="checkboxFacilityOnly" 
+                                      VerticalAlignment="Center">只显示设备空间</Fluent:CheckBox>
+                    <Fluent:CheckBox x:Name="checkboxRoomSelect" 
+                                      VerticalAlignment="Center" Checked="checkboxRoomSelect_Checked" Unchecked="checkboxRoomSelect_Unchecked">选取空间</Fluent:CheckBox>
+                    <Fluent:CheckBox x:Name="checkboxSelectTree" 
+                                      VerticalAlignment="Center" IsChecked="{Binding Path=bSelectStyle, Mode=TwoWay}" >由构件选取节点</Fluent:CheckBox>
+
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="可见">
+                    <Fluent:Button Header="隐藏" Icon="Images\Gray.png" LargeIcon="Images\hidden.png" x:Name="ButtonHidden" Click="ButtonHidden_Click" />
+                    <Fluent:Button Header="隐藏未选定" Icon="Images\Gray.png" LargeIcon="Images\unhidden.png" x:Name="ButtonUnHidden" Click="ButtonUnHidden_Click" />
+                    <Fluent:Button Header="显示全部" Icon="Images\Gray.png" LargeIcon="Images\showall.png" x:Name="ButtonShowAll" Click="ButtonShowAll_Click" />
+                    <Fluent:Button Header="隐藏天花" Icon="Images\Gray.png" LargeIcon="Images\viewFloor.png" x:Name="ButtonShowFloor" Click="ButtonShowFloor_Click"/>
+                    <Fluent:Button Header="隐藏房间" Icon="Images\Gray.png" LargeIcon="Images\viewRoom1.png" x:Name="ButtonShowRoom" Click="ButtonShowRoom_Click"/>
+                    <Fluent:Button Header="隐藏机电" Icon="Images\Gray.png" LargeIcon="Images\viewmep.png" x:Name="ButtonShowMEP" Click="ButtonShowMEP_Click"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="视点">
+                    <Fluent:Button Header="整体环视" Icon="Images\Gray.png" LargeIcon="Images\roamall.png" x:Name="ButtonVPMove" Click="ButtonVPMove_Click"/>
+                    <Fluent:Button Header="房间视点" Icon="Images\Gray.png" LargeIcon="Images\viewroom.png" x:Name="ButtonVPRoom" Click="ButtonVPRoom_Click" Visibility="Collapsed" />
+                    <Fluent:Button Header="设备状态视点" Icon="Images\Gray.png" LargeIcon="Images\viewfacility.png" x:Name="ButtonVPFacility" Click="ButtonVPMove_Click" Visibility="Collapsed"/>
+                    <Fluent:Button Header="顶视图" Icon="Images\Gray.png" LargeIcon="Images\viewtop.png" x:Name="ButtonVPTOP" Click="ButtonVPTOP_Click" Visibility="Collapsed" />
+                    <Fluent:Button Header="选择充满" Icon="Images\Gray.png" LargeIcon="Images\viewfit.png" x:Name="ButtonVPFIT" Click="ButtonVPFIT_Click"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="搜索">
+                    <Grid Width="210">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="55"/>
+                            <ColumnDefinition Width="155"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                     
+                    <Fluent:CheckBox x:Name="checkboxRoomSearch" 
+                                      VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Width="55" HorizontalAlignment="Left" Visibility="Hidden">房间</Fluent:CheckBox>
+                    <Fluent:TextBox x:Name="textboxRoomSearch" 
+                                      VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Width="150" Visibility="Hidden"></Fluent:TextBox>
+                    <Fluent:CheckBox x:Name="checkboxFacilitySearch" 
+                                      VerticalAlignment="Center" Grid.Column="0"  Grid.Row="1" Width="55" HorizontalAlignment="Left">设备</Fluent:CheckBox>
+                    <Fluent:TextBox x:Name="textboxFacilitySearch" 
+                                      VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Width="150"></Fluent:TextBox>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2">
+                            <Fluent:Button x:Name="btnSearchLast" KeyTip="上一个"
+                                    Header="上一个"
+                                    Icon="Images\arrow_up.png"
+                                    SizeDefinition="Middle,Small" Click="btnSearchLast_Click"
+                                    />
+                            <Fluent:Button x:Name="btnSearch" KeyTip="名称搜索"
+                                       Header="搜  索"
+                                       Icon="Images\search16.png"
+                                       SizeDefinition="Middle,Small"
+                                       Click="btnSearch_Click"/>
+                        <Fluent:Button x:Name="btnSearchNext" KeyTip="下一个"
+                                    Header="下一个"
+                                    Icon="Images\arrow_down.png"
+                                    SizeDefinition="Middle,Small"
+                                    Click="btnSearchNext_Click"/>
+                    </StackPanel> 
+                    </Grid>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="系统">
+                    <Fluent:DropDownButton x:Name="DropDownButtonSystem" Header="选择" Icon="Images\Pink.png" LargeIcon="Images\DropDownButtonSystem.png" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
+                        <Fluent:Button Header="暖通-暖通水" Icon="Images\Green.png" LargeIcon="Images\SystemM_NTS.png" Name="ButtonSystemM_NTS" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonSystemM_NTS_Click"/>
+                        <Fluent:Button Header="暖通-暖通风" Icon="Images\Green.png" LargeIcon="Images\SystemM_NTF.png" Name="ButtonSystemM_NTF" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonSystemM_NTF_Click"/>
+                        <Fluent:Button Header="给排水-消防" Icon="Images\Green.png" LargeIcon="Images\SystemP_XF.png" Name="ButtonSystemP_XF" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonSystemP_XF_Click"/>
+                        <Fluent:Button Header="给排水-给排水" Icon="Images\Green.png" LargeIcon="Images\SystemP_GPS.png" Name="ButtonSystemP_GPS" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonSystemP_GPS_Click"/>
+                        <Fluent:Button Header="电气-强电" Icon="Images\Green.png" LargeIcon="Images\SystemE_QD.png" Name="ButtonSystemE_QD" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonSystemE_QD_Click"/>
+                        <Fluent:Button Header="电气-弱电" Icon="Images\Green.png" LargeIcon="Images\SystemE_RD.png" Name="ButtonSystemE_RD" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonSystemE_RD_Click"/>
+                        <Fluent:Button Header="体量楼层" Icon="Images\Green.png" LargeIcon="Images\System_TLLC.png" Name="ButtonSystem_TLLC" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonSystem_TLLC_Click"/>
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="视角">
+                    <Fluent:DropDownButton x:Name="DropDownButtonViewCube" Header="方向" Icon="Images\Pink.png" LargeIcon="Images\viewpoint.png" HorizontalContentAlignment="Center" HorizontalAlignment="Center"  Height="Auto" DropDownHeight="500">
+                        <Fluent:Gallery>
+                            <Image Source="Images\viewpointfront.png"
+                                   Stretch="None" MouseDown="ButtonViewCubeFront_Click" />
+                            <Image Source="Images\viewpointback.png"
+                                   Stretch="None" MouseDown="ButtonViewCubeBack_Click" />
+                            <Image Source="Images\viewpointleft.png"
+                                   Stretch="None"  MouseDown="ButtonViewCubeLeft_Click"/>
+                            <Image Source="Images\viewpointright.png"
+                                   Stretch="None" MouseDown="ButtonViewCubeRight_Click" />
+                            <Image Source="Images\viewpointtop.png"
+                                   Stretch="None" MouseDown="ButtonViewCubeTop_Click" />
+                            <Image Source="Images\viewpointbottom.png"
+                                   Stretch="None" MouseDown="ButtonViewCubeBottom_Click" />
+                        </Fluent:Gallery>
+                        <!--
+                        <Fluent:Button Header="正面" Icon="Images\Green.png" LargeIcon="Images\viewpointfront.png" Name="ButtonViewCubeFront" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonViewCubeFront_Click"/>
+                        <Fluent:Button Header="后面" Icon="Images\Green.png" LargeIcon="Images\viewpointback.png" Name="ButtonViewCubeBack" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonViewCubeBack_Click"/>
+                        <Fluent:Button Header="左面" Icon="Images\Green.png" LargeIcon="Images\viewpointleft.png" Name="ButtonViewCubeLeft" HorizontalContentAlignment="Center" HorizontalAlignment="Center"  Click="ButtonViewCubeLeft_Click"/>
+                        <Fluent:Button Header="右面" Icon="Images\Green.png" LargeIcon="Images\viewpointright.png" Name="ButtonViewCubeRight" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonViewCubeRight_Click"/>
+                        <Fluent:Button Header="顶面" Icon="Images\Green.png" LargeIcon="Images\viewpointtop.png" Name="ButtonViewCubeTop" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonViewCubeTop_Click"/>
+                        <Fluent:Button Header="下面" Icon="Images\Green.png" LargeIcon="Images\viewpointbottom.png" Name="ButtonViewCubeBottom" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Click="ButtonViewCubeBottom_Click"/>
+                        -->
+                    </Fluent:DropDownButton>
+                    <Fluent:DropDownButton x:Name="DropDownButtonView2DDrawings" Header="图纸/模型" Icon="Images\Pink.png" LargeIcon="Images\view2D3D.png" HorizontalContentAlignment="Center" HorizontalAlignment="Center"  Height="Auto" DropDownHeight="500">
+                        <Fluent:Button Header="图纸查询" Icon="Images\Gray.png" LargeIcon="Images\view2Ddrawing.png" x:Name="view2Ddrawing" Click="view2Ddrawing_Click" />
+                        <Fluent:Button Header="模型查询" Icon="Images\Gray.png" LargeIcon="Images\view3Dmodel.png" x:Name="view3DModel" Click="view3DModel_Click" />
+                    </Fluent:DropDownButton>    
+                    
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="能源分析" ReduceOrder="(P),(P),(P),(P),(P)">
+                <Fluent:RibbonGroupBox Header="电量分析">
+                    <Fluent:Button Header="分层电量"  Icon="Images\Pink.png" LargeIcon="Images\energy.png" Name="ButtonEleLevelAnalysis" Click="ButtonEleLevelAnalysis_Click" />
+                    <Fluent:Button Header="部门电量"  Icon="Images\Pink.png" LargeIcon="Images\EleDepAnalysis.png" Name="ButtonEleDepAnalysis" Click="ButtonEleDepAnalysis_Click"  />
+                    <Fluent:Button Header="月度电量"  Icon="Images\Pink.png" LargeIcon="Images\EleMonthAnalysis.png" Name="ButtonEleMonthAnalysis" Click="ButtonEleMonthAnalysis_Click" Visibility="Collapsed"  />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="水量分析">
+                    <Fluent:Button Header="分层水量"  Icon="Images\Pink.png" LargeIcon="Images\water.png" Name="ButtonWaterLevelAnalysis" Click="ButtonWaterLevelAnalysis_Click" />
+                    <Fluent:Button Header="部门水量"  Icon="Images\Pink.png" LargeIcon="Images\waterDepAnalysis.png" Name="ButtonWaterDepAnalysis" Click="ButtonWaterDepAnalysis_Click"/>
+                    <Fluent:Button Header="月度水量"  Icon="Images\Pink.png" LargeIcon="Images\waterMonthAnalysis.png" Name="ButtonWaterMonthAnalysis" Visibility="Collapsed"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="热计量分析">
+                    <Fluent:Button Header="分层热计量"  Icon="Images\Pink.png" LargeIcon="Images\Heat.png" Name="ButtonHeatLevelAnalysis" Click="ButtonHeatLevelAnalysis_Click" />
+                    <Fluent:Button Header="部门热计量"  Icon="Images\Pink.png" LargeIcon="Images\HeatDepAnalysis.png" Name="ButtonHeatDepAnalysis" Click="ButtonHeatDepAnalysis_Click"/>
+                    <Fluent:Button Header="月度热计量"  Icon="Images\Pink.png" LargeIcon="Images\HeatMonthAnalysis.png" Name="ButtonHeatMonthAnalysis" Visibility="Collapsed"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="监控" ReduceOrder="(P),(P),(P),(P),(P)" Group="{Binding ElementName=tabGroup1, Mode=OneWay}">
+                <Fluent:RibbonGroupBox Header="实时">
+                    <Fluent:Button Header="实时监控" Icon="Images\Green.png" LargeIcon="Images\facilitymonitor.png" Name="ButtonMonitor" Click="ButtonMonitor_Click" />
+                    <Fluent:Button Header="房间曲线" Icon="Images\Green.png" LargeIcon="Images\RoomMonitorcurve.png" Name="ButtonRoomMonitor" Click="ButtonRoomMonitor_Click" />
+                    <Fluent:Button Header="PM2.5报警" Icon="Images\Green.png" LargeIcon="Images\pm25.png" Name="ButtonRoomPM25" Click="ButtonRoomPM25_Click" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="浏览" ReduceOrder="(P),(P),(P),(P),(P)" Group="{Binding ElementName=tabGroup2, Mode=OneWay}">
+                <Fluent:RibbonGroupBox Header="云端">
+                    <Fluent:Button Header="设备浏览" Icon="Images\Green.png" LargeIcon="Images\cloudlmv.png" Name="Buttonlmv" Click="Buttonlmv_Click"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="本地">
+                    <Fluent:Button Header="状态读取" Icon="Images\Green.png" LargeIcon="Images\movie.png" Name="Buttonu3d" Click="Buttonu3d_Click" />
+                    <Fluent:Button Header="VR周游" Icon="Images\Green.png" LargeIcon="Images\vr.png" Name="ButtonuVR" Click="ButtonuVR_Click"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="设置" ReduceOrder="(P),(P),(P),(P),(P)" >
+                <Fluent:RibbonGroupBox Header="视口显示">
+                    <Fluent:Button Header="选择树" Icon="Images\Gray.png" LargeIcon="Images\selecttree.png" x:Name="ButtonSelectTree" Click="ButtonSelectTree_Click" CanAddToQuickAccessToolBar="False" Foreground="#FF3B3B3B" />
+                    <Fluent:Button x:Name="ButtonProperty" Header="管理特性" Icon="Images\Gray.png" LargeIcon="Images\property.png" Click="ButtonProperty_Click" />
+                    <Fluent:Button x:Name="ButtonFacilitystate" Header="状态显示" Icon="Images\Gray.png" LargeIcon="Images\facilitystate.png" Click="ButtonFacilitystate_Click" />
+                    <Fluent:Button x:Name="ButtonMonitorShow" Header="监控" Icon="Images\Gray.png" LargeIcon="Images\monitor.png" Click="ButtonMonitorShow_Click" />
+                </Fluent:RibbonGroupBox>
+               
+                <Fluent:RibbonGroupBox Header="渲染">
+                    <Fluent:DropDownButton x:Name="DropDownButtonLighting" Header="光源" Icon="Images\Pink.png" LargeIcon="Images\light.png">
+                        <Fluent:Button Header="全光源" Icon="Images\Green.png" LargeIcon="Images\lightfull.png" Name="ButtonFullLights" Click="ButtonFullLights_Click"/>
+                        <Fluent:Button Header="顶光源" Icon="Images\Green.png" LargeIcon="Images\lighthead.png" Name="ButtonHeadlight" Click="ButtonHeadlight_Click"/>
+                        <Fluent:Button Header="场光源" Icon="Images\Green.png" LargeIcon="Images\lightscene.png" Name="ButtonSceneLights" Click="ButtonSceneLights_Click"/>
+                        <Fluent:Button Header="无光源" Icon="Images\Green.png" LargeIcon="Images\lightnone.png" Name="ButtonNoneLights" Click="ButtonNoneLights_Click"/>
+                    </Fluent:DropDownButton>
+                    <Fluent:DropDownButton x:Name="DropDownButtonRender" Header="模式" Icon="Images\Pink.png" LargeIcon="Images\rendershape.png">
+                        <Fluent:Button Header="完全渲染" Icon="Images\Green.png" LargeIcon="Images\renderfull.png" Name="ButtonRenderFull" Click="ButtonRenderFull_Click" />
+                        <Fluent:Button Header="着色模式" Icon="Images\Green.png" LargeIcon="Images\rendershape.png" Name="ButtonRenderShaded" Click="ButtonRenderShaded_Click" />
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="剖分设置">
+                    <!--
+                    <Fluent:Button Header="剖分" Icon="Images\Gray.png" LargeIcon="Images\database.png" Name="ButtonSectioning" Click="ButtonSectioning_Click" />
+                    -->
+                    <Fluent:Button Header="剖分清除" Icon="Images\Gray.png" LargeIcon="Images\SectioningClear.png" Name="ButtonSectioningClear" Click="ButtonSectioningClear_Click" />
+                    <Fluent:Button Header="剖分作用" Icon="Images\Gray.png" LargeIcon="Images\SectioningEnable.png" Name="ButtonSectioningEnable" Click="ButtonSectioningEnable_Click" />
+                    <Fluent:Button Header="选择剖分" Icon="Images\Gray.png" LargeIcon="Images\SectioningCreate.png" Name="ButtonSectioningCreate" Click="ButtonSectioningCreate_Click" />
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="数据库设置">
+                    <Fluent:Button Header="基本数据库" Icon="Images\Gray.png" LargeIcon="Images\database.png" Name="ButtonBIMDB" Click="ButtonBIMDB_Click" />
+                    <Fluent:Button Header="监控数据库" Icon="Images\Gray.png" LargeIcon="Images\database1.png" Name="ButtonMonitorDB" Click="ButtonMonitorDB_Click" />
+                    <Fluent:Button Header="分析数据库" Icon="Images\Gray.png" LargeIcon="Images\database2.png" Name="ButtonAnalysisDB" Click="ButtonAnalysisDB_Click" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <!--Backstage Items-->
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage Background="Gray">
+                    <Fluent:BackstageTabControl>
+                        <Fluent:Button Header="主模型刷新" Icon="Images\arrow_refresh.png"/>
+                        <Fluent:SeparatorTabItem Header="" />
+                        <Fluent:Button Header="退出系统" Command="{Binding ExitSystemCommand}" Icon="Images\close.png"/>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+
+        </Fluent:Ribbon>
+
+        <avalonDock:DockingManager x:Name="dockingManager" Grid.Row="1">
+            <avalonDock:LayoutRoot>
+                <avalonDock:LayoutPanel Orientation="Horizontal">
+                    <avalonDock:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
+                        <avalonDock:LayoutAnchorablePane>
+                            <avalonDock:LayoutAnchorable x:Name="DockSelectTree" Title="选择树" CanClose="False">
+                                <DockPanel>
+                                    <ComboBox DockPanel.Dock="Top" x:Name="comoBoxSelectStyle" SelectionChanged="comoBoxSelectStyle_SelectionChanged">
+                                    </ComboBox>
+                                    <TreeView x:Name="treeviewSelectTree" MouseDoubleClick="treeviewSelectTree_MouseDoubleClick" FontSize="14">
+                                        <TreeView.ContextMenu>
+                                            <ContextMenu Name="ContextMenuSelectTree"  Loaded="ContextMenuSelectTree_Loaded">
+                                                <MenuItem Header="选择定位" Name="miSelectLocation" Click="miSelectLocation_Click" />
+                                                <MenuItem Header="监控空间" Name="miSelectControlLocation" Click="miSelectControlLocation_Click" />
+                                                <Separator></Separator>
+                                                <MenuItem Header="控制设备" Name="miSelectControlFacility" Click="miSelectControlFacility_Click" />
+                                                <MenuItem Header="受控设备" Name="miSelectControledFacility" Click="miSelectControledFacility_Click" />
+                                                <Separator></Separator>
+                                                <MenuItem Header="二维图纸" Name="miSelect2DDrawing" Click="miSelect2DDrawing_Click"  />
+                                                <MenuItem Header="归档图纸" Name="miSelectDrawings" Click="miSelectDrawings_Click" />
+                                                <Separator></Separator>
+                                                <MenuItem Header="展开" Name="miSelectExpand" Click="miSelectExpand_Click"/>
+                                            </ContextMenu>
+                                        </TreeView.ContextMenu>
+                                        <TreeView.ItemContainerStyle>
+                                            <Style TargetType="{x:Type TreeViewItem}">
+                                                <Setter  Property="IsExpanded" Value="{Binding Path=IsExpanded, Mode=TwoWay}"></Setter>
+                                                <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"></Setter>
+                                                <Setter Property="FontWeight" Value="Normal" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="FontWeight" Value="Bold" />
+                                                        <Setter Property="Foreground" Value="Green"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+
+                                        </TreeView.ItemContainerStyle>
+                                        <TreeView.ItemTemplate>
+                                            <HierarchicalDataTemplate  ItemsSource="{Binding Path=Children}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image VerticalAlignment="Center" Source="{Binding sIcon}" Width="16" Height="16" Margin="0,0,2,2"></Image>
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding sDisplayName}"></TextBlock>
+                                                    <StackPanel.ToolTip>
+                                                        <TextBlock VerticalAlignment="Center" Text="{Binding sNote}" TextWrapping="Wrap" MaxWidth="200" ></TextBlock>
+                                                    </StackPanel.ToolTip>
+                                                </StackPanel>
+                                            </HierarchicalDataTemplate>
+                                        </TreeView.ItemTemplate>
+                                    </TreeView>
+                                </DockPanel>
+                            </avalonDock:LayoutAnchorable>
+                            <!--
+                            <avalonDock:LayoutAnchorable Title="视图">
+                                <TextBox/>
+                            </avalonDock:LayoutAnchorable>
+                            -->
+                        </avalonDock:LayoutAnchorablePane>
+
+                    </avalonDock:LayoutAnchorablePaneGroup>
+                    <avalonDock:LayoutDocumentPaneGroup>
+                        <avalonDock:LayoutDocumentPane>
+
+                            <avalonDock:LayoutDocument x:Name="mainModelView" Title="Model" CanClose="False">
+                                <wfi:WindowsFormsHost>
+                                    <NwControls:ViewControl x:Name="viewControl">
+                                    </NwControls:ViewControl>
+                                </wfi:WindowsFormsHost>
+                            </avalonDock:LayoutDocument>
+
+                            <avalonDock:LayoutDocument x:Name="mainModelView2D" Title="二维图纸" CanClose="False">
+                                <wfi:WindowsFormsHost>
+                                    <NwControls:ViewControl x:Name="viewControl2D">
+                                    </NwControls:ViewControl>
+                                </wfi:WindowsFormsHost>
+                            </avalonDock:LayoutDocument>
+
+                            <avalonDock:LayoutDocument  x:Name="mainDrawingView" Title="归档图纸" CanClose="False">
+                                <!--
+                                <wfi:WindowsFormsHost>
+                                    <pdf:UserControlPDFReader x:Name="viewPDF">
+                                    </pdf:UserControlPDFReader>
+                                </wfi:WindowsFormsHost>
+                                -->
+                                <WebBrowser x:Name="webBrowerDrawing" >
+                                </WebBrowser>
+                            </avalonDock:LayoutDocument>
+
+
+
+                        </avalonDock:LayoutDocumentPane>
+                    </avalonDock:LayoutDocumentPaneGroup>
+
+                    <avalonDock:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
+                        <avalonDock:LayoutAnchorablePane>
+                            <avalonDock:LayoutAnchorable x:Name="DockFacilityStatus" Title="状态显示" CanClose="False">
+                                <wfi:WindowsFormsHost x:Name="wfiU3dPlayer" >
+                                   
+                                </wfi:WindowsFormsHost>
+                            </avalonDock:LayoutAnchorable>
+                        </avalonDock:LayoutAnchorablePane>
+
+                        <avalonDock:LayoutAnchorablePane>
+                            <avalonDock:LayoutAnchorable x:Name="Dockproperty" Title="管理特性" CanClose="False">
+                                <DataGrid x:Name="DGMproperty" AutoGenerateColumns="False" CanUserAddRows="False" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" HorizontalGridLinesBrush="Gray" VerticalGridLinesBrush="LightGray" EnableRowVirtualization="False">
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="Background" Value="White" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="LightGray"/>
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="特性" Binding="{Binding 特性}"></DataGridTextColumn>
+                                        <DataGridTextColumn Header="值" Binding="{Binding 值}" Width ="*"></DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </avalonDock:LayoutAnchorable>
+
+                        </avalonDock:LayoutAnchorablePane>
+
+                        <avalonDock:LayoutAnchorablePane>
+                            <avalonDock:LayoutAnchorable x:Name="DockMonitor"  Title="监控" CanClose="False">
+                                <DataGrid x:Name="DGMmonitor" AutoGenerateColumns="False" CanUserAddRows="False" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" HorizontalGridLinesBrush="Gray" VerticalGridLinesBrush="LightGray" EnableRowVirtualization="False">
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="Background" Value="White" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="LightGray"/>
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="特性" Binding="{Binding 特性}"></DataGridTextColumn>
+                                        <DataGridTextColumn Header="值" Binding="{Binding 值}" Width ="*"></DataGridTextColumn>
+                                        <DataGridTextColumn Header="控制" Binding="{Binding 控制}" Width ="*" Visibility="Hidden"></DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </avalonDock:LayoutAnchorable>
+                        </avalonDock:LayoutAnchorablePane>
+
+
+                    </avalonDock:LayoutAnchorablePaneGroup>
+                </avalonDock:LayoutPanel>
+
+                <avalonDock:LayoutRoot.LeftSide>
+                    <avalonDock:LayoutAnchorSide>
+
+                        <avalonDock:LayoutAnchorGroup>
+                            <avalonDock:LayoutAnchorable x:Name="LayoutEnergyAnalysis" Title="能源分析" AutoHideMinWidth="620" AutoHideWidth="100" CanClose="False">
+                                <!--
+                                <Grid Name="EnergyAnalysis" VerticalAlignment="Top" Width="320">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition x:Name="StackedColumn"/>
+                                        <RowDefinition x:Name="Spline"/>
+                                        <RowDefinition x:Name="Pie"/>
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                                -->
+                                <WrapPanel Name="EnergyAnalysis" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+                                </WrapPanel>
+                            </avalonDock:LayoutAnchorable>
+                        </avalonDock:LayoutAnchorGroup>
+
+                        <avalonDock:LayoutAnchorGroup>
+                            <avalonDock:LayoutAnchorable x:Name="LayoutRoomMoniter" Title="环境曲线" CanClose="False" AutoHideMinWidth="480" AutoHideWidth="100">
+                                <WrapPanel Name="RoomMoniter" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                                    
+                                </WrapPanel>
+                            </avalonDock:LayoutAnchorable>
+                        </avalonDock:LayoutAnchorGroup>
+
+                        <avalonDock:LayoutAnchorGroup>
+                            
+                            <avalonDock:LayoutAnchorable x:Name="LayoutPM25WarnPool" Title="PM2.5警报汇总" CanClose="False" AutoHideMinWidth="480" AutoHideWidth="100">
+                                <WrapPanel Name="RoomM" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                                    <Label x:Name="LabelWarnPOOL" />
+                                    <Button x:Name="WarnPOOLRefresh" Click="WarnPOOLRefresh_Click">刷新</Button>
+                                    <DataGrid x:Name="DGWarnPOOL" AutoGenerateColumns="False" CanUserAddRows="False" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" HorizontalGridLinesBrush="Gray" VerticalGridLinesBrush="LightGray" EnableRowVirtualization="False" Background="red">
+                                        <DataGrid.RowStyle>
+                                            <Style TargetType="DataGridRow">
+                                                <Setter Property="Background" Value="LightPink" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="Pink"/>
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGrid.RowStyle>
+                                        
+                                        <DataGrid.ColumnHeaderStyle>
+                                            <Style TargetType="DataGridColumnHeader">
+                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGrid.ColumnHeaderStyle>
+
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="楼层" Binding="{Binding 楼层}" ></DataGridTextColumn>
+                                            <DataGridTextColumn Header="房间" Binding="{Binding 房间}" Width ="*"></DataGridTextColumn>
+                                            <DataGridTextColumn Header="PM2.5取值" Binding="{Binding 取值}" Foreground="red" >
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+      
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    
+
+                                </WrapPanel>
+ 
+                            </avalonDock:LayoutAnchorable>
+                        </avalonDock:LayoutAnchorGroup>
+                        <!--
+                        <avalonDock:LayoutAnchorGroup>
+                            <avalonDock:LayoutAnchorable Title="Autohidden Content1">
+                                <TextBox/>
+                            </avalonDock:LayoutAnchorable>
+                        </avalonDock:LayoutAnchorGroup>
+                    -->
+
+                    </avalonDock:LayoutAnchorSide>
+                </avalonDock:LayoutRoot.LeftSide>
+
+
+            </avalonDock:LayoutRoot>
+        </avalonDock:DockingManager>
+
+        <Fluent:StatusBar HorizontalAlignment="Stretch"
+                          VerticalAlignment="Bottom"
+                          Grid.Row="2">
+            <Fluent:StatusBarItem Title="Words Width"
+                                  Value="250"
+                                  HorizontalAlignment="Left">
+                <TextBlock x:Name="TextBlockSelectStyle" Text="{Binding sSelectStyle, Mode=TwoWay}" />
+            </Fluent:StatusBarItem>
+            <Separator HorizontalAlignment="Left" />
+            <Fluent:StatusBarItem x:Name="StatusBarItemSelect" Title=""
+                                  Value="115"
+                                  ToolTip="选择模式"
+                                  Content="选择"
+                                  HorizontalAlignment="Left" />
+            <Separator HorizontalAlignment="Left" />
+            
+            
+            <Separator HorizontalAlignment="Right" />
+            <Fluent:StatusBarItem x:Name="StatusBarLighting" Title=""
+                                  Value="115"
+                                  ToolTip="光源样式"
+                                  Content="顶光源"
+                                  HorizontalAlignment="Right" />
+            <Separator HorizontalAlignment="Right" />
+            <Fluent:StatusBarItem x:Name="StatusBarRender" Title=""
+                                  Value="115"
+                                  ToolTip="渲染模式"
+                                  Content="着色模式"
+                                  HorizontalAlignment="Right" />
+            <Separator HorizontalAlignment="Right" />
+            <Fluent:StatusBarItem x:Name="StatusBarSystem" Title=""
+                                  Value="115"
+                                  ToolTip="系统选择"
+                                  Content="全专业"
+                                  HorizontalAlignment="Right" />
+            <Separator HorizontalAlignment="Right" />
+            <Fluent:StatusBarItem Title=""
+                                  Value=""
+                                  ToolTip=""
+                                  HorizontalAlignment="Right">
+                <ProgressBar x:Name="ProgressBarStatus" Value="0" Width="100" Height="15"/>
+            </Fluent:StatusBarItem>
+                <Separator HorizontalAlignment="Right" />
+
+
+        </Fluent:StatusBar>
+        
+    </Grid>
+</Fluent:RibbonWindow>
